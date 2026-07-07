@@ -68,6 +68,7 @@ export default function AdminDashboard() {
 
   // 2. State for Filters and Modal
   const [paymentFilter, setPaymentFilter] = useState('All');
+  const [dateFilter, setDateFilter] = useState(''); // Added state for date filter
   const [selectedTrx, setSelectedTrx] = useState(null); // Holds the data for the modal
 
   // Options for the CustomDropdown filter
@@ -78,9 +79,10 @@ export default function AdminDashboard() {
     { value: 'Offline Challan', label: 'Offline Challan' }
   ];
 
-  // Apply the filter to the data
+  // Apply the filter to the data (Updated to include date filter)
   const filteredTransactions = allTransactions.filter(trx => 
-    paymentFilter === 'All' || trx.paymentMode === paymentFilter
+    (paymentFilter === 'All' || trx.paymentMode === paymentFilter) &&
+    (dateFilter === '' || trx.date === dateFilter)
   );
 
   return (
@@ -98,8 +100,9 @@ export default function AdminDashboard() {
 
       {/* Action Bar (Filters & Export) */}
       <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-[5px] border border-zinc-200 shadow-sm mb-6 gap-4">
-        <div className="flex items-center gap-4 w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
           <span className="text-sm font-semibold text-zinc-700">Filter By:</span>
+          
           <div className="w-64">
             <CustomDropdown 
               options={filterOptions}
@@ -107,6 +110,24 @@ export default function AdminDashboard() {
               onChange={setPaymentFilter}
               placeholder="Select Payment Mode"
             />
+          </div>
+
+          {/* Custom Date Filter */}
+          <div className="flex items-center gap-2">
+            <input 
+              type="date" 
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="border border-zinc-300 rounded-[5px] px-3 py-2 text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 bg-white text-zinc-700 h-[38px]"
+            />
+            {dateFilter && (
+              <button 
+                onClick={() => setDateFilter('')}
+                className="text-xs text-zinc-500 hover:text-black underline transition-colors"
+              >
+                Clear Date
+              </button>
+            )}
           </div>
         </div>
         
@@ -183,7 +204,7 @@ export default function AdminDashboard() {
               {filteredTransactions.length === 0 && (
                 <tr>
                   <td colSpan="8" className="px-6 py-10 text-center text-zinc-500">
-                    No transactions found for the selected filter.
+                    No transactions found for the selected filters.
                   </td>
                 </tr>
               )}
@@ -216,9 +237,7 @@ export default function AdminDashboard() {
                 <h2 className="font-serif text-3xl text-black font-semibold">Technical Demand Record</h2>
               </div>
               <div className="text-right">
-                <div className="text-xs font-mono bg-yellow-100 text-yellow-800 border border-yellow-300 px-3 py-1 mb-1 inline-block uppercase tracking-wider">
-                  {selectedTrx.status}
-                </div>
+               
                 <p className="font-mono text-xs text-zinc-600">Dated: {selectedTrx.date}</p>
               </div>
             </div>

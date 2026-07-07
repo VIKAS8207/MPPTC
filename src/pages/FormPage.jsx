@@ -244,41 +244,7 @@ export default function FormPage() {
           </div>
         </div>
 
-        {/* --- SECTION 4: ADDITIONAL INFO --- */}
-        <div className="mb-10">
-          <h2 className="text-lg font-semibold border-b border-zinc-200 pb-2 mb-4">4. Additional Information</h2>
-          
-          <div className="mb-6">
-            <label className="block text-sm font-medium mb-3">Relevant Categories (Select all that apply)*</label>
-            <div className="flex flex-wrap gap-6">
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 text-yellow-500 focus:ring-yellow-500 border-zinc-300 rounded-[5px]" />
-                <span className="text-sm">a) Line</span>
-              </label>
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 text-yellow-500 focus:ring-yellow-500 border-zinc-300 rounded-[5px]" />
-                <span className="text-sm">b) Substation/Feeder bay</span>
-              </label>
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 text-yellow-500 focus:ring-yellow-500 border-zinc-300 rounded-[5px]" />
-                <span className="text-sm">c) SAC</span>
-              </label>
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 text-yellow-500 focus:ring-yellow-500 border-zinc-300 rounded-[5px]" />
-                <span className="text-sm">d) Others</span>
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Remarks</label>
-            <textarea 
-              rows="4" 
-              className={`${inputBaseClass} resize-none`}
-              placeholder="Add any additional context or remarks here..."
-            ></textarea>
-          </div>
-        </div>
+       
 
         {/* --- SUBMIT --- */}
         <div className="flex justify-end pt-6 border-t border-zinc-200">
