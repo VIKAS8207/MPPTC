@@ -2,7 +2,7 @@ import { useState } from 'react';
 import CustomDropdown from '../components/common/CustomDropdown';
 
 export default function AdminDashboard() {
-  // 1. Expanded Mock Data (Now includes all form fields for the detailed view)
+  // 1. Expanded Mock Data (Now includes 7 entries for date range testing)
   const allTransactions = [
     { 
       sno: "001", 
@@ -63,13 +63,94 @@ export default function AdminDashboard() {
       bankName: "ICICI Bank, Civil Lines",
       accountNo: "00555555555",
       ifsc: "ICIC0005555"
+    },
+    { 
+      sno: "004", 
+      customerName: "Vanguard Energy", 
+      customerNumber: "CUST-6610", 
+      workName: "132kV Line Shifting", 
+      date: "2026-07-01", 
+      amount: "₹15,00,000", 
+      paymentMode: "NEFT / RTGS", 
+      status: "Success",
+      natureOfWork: "Mod./shifting of Transmission Line",
+      contractDemand: "2500",
+      discomRegion: "MPPKVVCL",
+      demandAuthority: "P&D",
+      pan: "QWERT1111A",
+      gstin: "23QWERT1111A1Z1",
+      address: "88 Energy Park, Ujjain, MP, 456010",
+      bankName: "Axis Bank, Freeganj",
+      accountNo: "00111111111",
+      ifsc: "UTIB0000111"
+    },
+    { 
+      sno: "005", 
+      customerName: "Pioneer Builders", 
+      customerNumber: "CUST-5522", 
+      workName: "New Transformer Bay", 
+      date: "2026-07-03", 
+      amount: "₹3,40,000", 
+      paymentMode: "Online PG", 
+      status: "Success",
+      natureOfWork: "Construction of Substation/Feeder bays",
+      contractDemand: "800",
+      discomRegion: "MPMKVVCL",
+      demandAuthority: "CRA",
+      pan: "ASDFG2222B",
+      gstin: "23ASDFG2222B2Z2",
+      address: "12 Builder Avenue, Gwalior, MP, 474001",
+      bankName: "PNB, City Centre",
+      accountNo: "00222222222",
+      ifsc: "PUNB0000222"
+    },
+    { 
+      sno: "006", 
+      customerName: "Narmada Mills", 
+      customerNumber: "CUST-4433", 
+      workName: "MTOA Grid Access", 
+      date: "2026-07-05", 
+      amount: "₹2,10,000", 
+      paymentMode: "Offline Challan", 
+      status: "Awaiting Cheque",
+      natureOfWork: "Others",
+      contractDemand: "450",
+      discomRegion: "MPPKVVCL",
+      demandAuthority: "Others",
+      pan: "ZXCVB3333C",
+      gstin: "23ZXCVB3333C3Z3",
+      address: "Plot 5, Industrial Area, Dhar, MP, 454001",
+      bankName: "Bank of Baroda, Main",
+      accountNo: "00333333333",
+      ifsc: "BARB0DHARXX"
+    },
+    { 
+      sno: "007", 
+      customerName: "Summit Steel", 
+      customerNumber: "CUST-3344", 
+      workName: "SAC Charge Phase 2", 
+      date: "2026-07-08", 
+      amount: "₹6,75,000", 
+      paymentMode: "NEFT / RTGS", 
+      status: "Pending Verification",
+      natureOfWork: "Supply Affording Charges(SAC)",
+      contractDemand: "1200",
+      discomRegion: "MPEZCL",
+      demandAuthority: "P&D",
+      pan: "TYUIO4444D",
+      gstin: "23TYUIO4444D4Z4",
+      address: "Phase 2, Steel Hub, Rewa, MP, 486001",
+      bankName: "Union Bank, Rewa",
+      accountNo: "00444444444",
+      ifsc: "UBIN0534444"
     }
   ];
 
   // 2. State for Filters and Modal
   const [paymentFilter, setPaymentFilter] = useState('All');
-  const [dateFilter, setDateFilter] = useState(''); // Added state for date filter
-  const [selectedTrx, setSelectedTrx] = useState(null); // Holds the data for the modal
+  const [fromDate, setFromDate] = useState(''); // From Date state
+  const [toDate, setToDate] = useState('');     // To Date state
+  const [selectedTrx, setSelectedTrx] = useState(null);
 
   // Options for the CustomDropdown filter
   const filterOptions = [
@@ -79,11 +160,14 @@ export default function AdminDashboard() {
     { value: 'Offline Challan', label: 'Offline Challan' }
   ];
 
-  // Apply the filter to the data (Updated to include date filter)
-  const filteredTransactions = allTransactions.filter(trx => 
-    (paymentFilter === 'All' || trx.paymentMode === paymentFilter) &&
-    (dateFilter === '' || trx.date === dateFilter)
-  );
+  // Apply both Payment and Date Range filters
+  const filteredTransactions = allTransactions.filter(trx => {
+    const matchPayment = paymentFilter === 'All' || trx.paymentMode === paymentFilter;
+    const matchFromDate = fromDate === '' || trx.date >= fromDate;
+    const matchToDate = toDate === '' || trx.date <= toDate;
+    
+    return matchPayment && matchFromDate && matchToDate;
+  });
 
   return (
     <div className="flex-grow flex flex-col max-w-6xl mx-auto w-full py-10 px-4 relative">
@@ -99,11 +183,11 @@ export default function AdminDashboard() {
       </div>
 
       {/* Action Bar (Filters & Export) */}
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-[5px] border border-zinc-200 shadow-sm mb-6 gap-4">
-        <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+      <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center bg-white p-4 rounded-[5px] border border-zinc-200 shadow-sm mb-6 gap-4">
+        <div className="flex flex-wrap items-center gap-4 w-full xl:w-auto">
           <span className="text-sm font-semibold text-zinc-700">Filter By:</span>
           
-          <div className="w-64">
+          <div className="w-56">
             <CustomDropdown 
               options={filterOptions}
               value={paymentFilter}
@@ -112,20 +196,30 @@ export default function AdminDashboard() {
             />
           </div>
 
-          {/* Custom Date Filter */}
-          <div className="flex items-center gap-2">
+          {/* Date Range Filters */}
+          <div className="flex items-center gap-2 px-3 py-1.5">
+            <span className="text-xs text-zinc-500 font-medium">From:</span>
             <input 
               type="date" 
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-              className="border border-zinc-300 rounded-[5px] px-3 py-2 text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 bg-white text-zinc-700 h-[38px]"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              className="border border-zinc-300 rounded-[5px] px-2 py-1 text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 bg-white text-zinc-700 h-[34px]"
             />
-            {dateFilter && (
+            <span className="text-xs text-zinc-500 font-medium ml-2">To:</span>
+            <input 
+              type="date" 
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+              className="border border-zinc-300 rounded-[5px] px-2 py-1 text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 bg-white text-zinc-700 h-[34px]"
+            />
+            
+            {/* Clear Dates Button */}
+            {(fromDate || toDate) && (
               <button 
-                onClick={() => setDateFilter('')}
-                className="text-xs text-zinc-500 hover:text-black underline transition-colors"
+                onClick={() => { setFromDate(''); setToDate(''); }}
+                className="text-xs text-zinc-500 hover:text-black underline transition-colors ml-2 whitespace-nowrap"
               >
-                Clear Date
+                Clear Dates
               </button>
             )}
           </div>
@@ -237,7 +331,7 @@ export default function AdminDashboard() {
                 <h2 className="font-serif text-3xl text-black font-semibold">Technical Demand Record</h2>
               </div>
               <div className="text-right">
-               
+                
                 <p className="font-mono text-xs text-zinc-600">Dated: {selectedTrx.date}</p>
               </div>
             </div>
