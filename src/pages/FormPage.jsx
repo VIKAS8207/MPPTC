@@ -86,8 +86,8 @@ export default function FormPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             
-            {/* Always rendered: Initial Nature of Work Selector */}
-            <div className="md:col-span-2">
+            {/* Always rendered: Initial Nature of Work Selector - Now 1 column wide to be shorter */}
+            <div>
               <label className="block text-sm font-medium mb-1">Nature of work*</label>
               <CustomDropdown 
                 options={natureOptions} 
@@ -130,8 +130,8 @@ export default function FormPage() {
                 </div>
               )}
 
-              {/* SHARED: Complete Name of Work */}
-              <div className={currentRole === 3 ? "" : "md:col-span-2"}>
+              {/* SHARED: Complete Name of Work - Now explicitly full width (col-span-2) for all roles */}
+              <div className="md:col-span-2">
                 <label className="block text-sm font-medium mb-1">Complete Name of Work*</label>
                 <input type="text" required className={inputBaseClass} />
               </div>
@@ -181,7 +181,7 @@ export default function FormPage() {
                 <input type="text" required placeholder="e.g., REF-123 / 2026-05-12" className={inputBaseClass} />
               </div>
 
-              {/* SHARED (NEW): Reference Document File Upload */}
+              {/* SHARED: Reference Document File Upload */}
               <div>
                 <label className="block text-sm font-medium mb-1">Reference Document*</label>
                 <input 
