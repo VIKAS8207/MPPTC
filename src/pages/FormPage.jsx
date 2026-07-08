@@ -98,6 +98,12 @@ export default function FormPage() {
             </div>
           </div>
 
+          {/* SHARED: Complete Name of Work - Now explicitly full width (col-span-2) for all roles */}
+              <div className="md:col-span-2 mb-4">
+                <label className="block text-sm font-medium mb-1">Complete Name of Work*</label>
+                <input type="text" required className={inputBaseClass} />
+              </div>
+
           {/* DYNAMIC ROLE RENDERING */}
           {currentRole !== 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-top-2">
@@ -130,11 +136,7 @@ export default function FormPage() {
                 </div>
               )}
 
-              {/* SHARED: Complete Name of Work - Now explicitly full width (col-span-2) for all roles */}
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Complete Name of Work*</label>
-                <input type="text" required className={inputBaseClass} />
-              </div>
+              
 
               {/* --- ROLE 2 EXCLUSIVE: Access Type --- */}
               {currentRole === 2 && (
